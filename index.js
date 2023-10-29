@@ -50,9 +50,9 @@ async function run() {
     });
 
     app.post("/bookings/:id", async (req, res) => {
-      const data = req.body;
-      console.log(data);
-      const result = await bookingCollection.insertOne(data);
+      const booking = req.body;
+      console.log(booking);
+      const result = await bookingCollection.insertOne(booking);
       console.log(result);
       res.send(result);
     });
