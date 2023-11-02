@@ -35,19 +35,31 @@ async function run() {
       res.send(result);
     });
 
-    // bookings
-    app.get("/bookings/:id", async (req, res) => {
+    app.get("/services/:id", async (req, res) => {
       const id = req.params.id;
-      console.log(id);
       const query = { _id: new ObjectId(id) };
-      //   const query = { _id: new ObjectId(id) };
 
-      const result = await serviceCollection.findOne(query);
+      const options = {
+        projection: { title: 1, price: 1, service_id: 1, img: 1 },
+      }
+
+      const result = await serviceCollection.findOne(query, options);
 
       //   const result = await serviceCollection.findOne(query);
       //   const result = await serviceCollection.find().toArray();
       res.send(result);
     });
+
+    // booking
+    app.get('/bookings', async (req, res) => {
+      let query = {}
+      if (req.query?.email) {
+        query = { email: req.query.email }
+      }
+      const result = await bookingCollection.find(query).toArray()
+      // console.log(req.query);
+      res.send(result)
+    })
 
     app.post("/bookings/:id", async (req, res) => {
       const booking = req.body;
